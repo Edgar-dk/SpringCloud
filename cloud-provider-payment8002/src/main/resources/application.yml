@@ -1,6 +1,6 @@
 #这是一个服务端口号
 server:
-  port: 8001
+  port: 8002
 
 #服务的名称
 spring:

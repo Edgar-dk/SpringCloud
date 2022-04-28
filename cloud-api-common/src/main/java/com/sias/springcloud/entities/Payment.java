@@ -17,6 +17,7 @@ import java.io.Serializable;
 @NoArgsConstructor
 public class Payment implements Serializable {
 
+    /*序列化的目的是为了让存放的数据更好的读取出来*/
     private Long id;
     private String serial;
 }
