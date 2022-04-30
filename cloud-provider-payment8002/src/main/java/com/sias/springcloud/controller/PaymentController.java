@@ -4,6 +4,7 @@ import com.sias.springcloud.entities.CommonResult;
 import com.sias.springcloud.entities.Payment;
 import com.sias.springcloud.service.PaymentService;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
@@ -22,6 +23,9 @@ public class PaymentController {
     private PaymentService paymentService;
 
 
+    /*当有多个服务的话需要标明哪一个是主服务*/
+    @Value("${server.port}")
+    private String serverPort;
     /*01.这个放回的结果，是给页面的，是成功了
     *    还是失败了，返回的是一个标识符（0/1）
     *
@@ -33,7 +37,7 @@ public class PaymentController {
         int result = paymentService.create(payment);
         if (result > 0){
             /*02.可以在这个一步分开去写，先set在去传递这个对象*/
-            return new CommonResult(200,"插入数据成功",result);
+            return new CommonResult(200,"插入数据成功："+serverPort,result);
         }else {
            return new CommonResult(444,"插入数据失败",null);
         }
@@ -59,7 +63,7 @@ public class PaymentController {
             *    步处理的，把从数据库中获取的数据，按照这个类型去显示
             *    然后在一并放到一个大的字符串中，最终以json的形式
             *    把数据展示在页面上*/
-            return new CommonResult(200,"查询数据成功",payment);
+            return new CommonResult(200,"查询数据成功："+serverPort,payment);
         }else {
             return new CommonResult(444,"查询数据失败:"+id,null);
         }

@@ -6,10 +6,13 @@ import com.sias.springcloud.service.PaymentService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.cloud.client.ServiceInstance;
+import org.springframework.cloud.client.discovery.DiscoveryClient;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import java.util.List;
 
 /**
  * @author Edgar
@@ -21,15 +24,22 @@ import javax.annotation.Resource;
 @Slf4j
 public class PaymentController {
 
+    /*01.获取连接对象
+    *    然后在下面去使用
+    *    这个连接对象里面的类*/
     @Resource
     private PaymentService paymentService;
 
-
-    /*当有多个服务的话需要标明哪一个是主服务*/
-    @Value("$(server.port)")
+    /*02.获取Eureka里面的应用个数（就是公司的个数）
+    *    也可以获取一个公司里面有几个老师
+    *    就是一个application里面有几个服务端口*/
+    @Resource
+    private DiscoveryClient discoveryClient;
+    /*03.标注当前的服务端口是多少，例如这个是8001*/
+    @Value("${server.port}")
     private String serverPort;
 
-    /*01.这个放回的结果，是给页面的，是成功了
+    /*04.这个放回的结果，是给页面的，是成功了
     *    还是失败了，返回的是一个标识符（0/1）
     *
     *    需要注意一点的是，ResponseBody是转换对象中的数据
@@ -40,13 +50,13 @@ public class PaymentController {
         int result = paymentService.create(payment);
         if (result > 0){
             /*02.可以在这个一步分开去写，先set在去传递这个对象*/
-            return new CommonResult(200,"插入数据成功:serverPort"+serverPort,result);
+            return new CommonResult(200,"插入数据成功，serverPort："+serverPort,result);
         }else {
            return new CommonResult(444,"插入数据失败",null);
         }
     }
 
-
+    /*05.读的操作*/
     @GetMapping (value = "/payment/get/{id}")
     public CommonResult<Payment> getPaymentById(@PathVariable("id") Long id){
         Payment payment = paymentService.getPaymentById(id);
@@ -73,10 +83,24 @@ public class PaymentController {
     }
 
 
-    /*测试跳转页面*//*
-    @RequestMapping( "/success")
-    @ResponseBody
-    public String success(){
-        return "main";
-    }*/
+
+
+    /*06.获取Eureka里面注册的应用和一个应用中的个数*/
+    @GetMapping(value = "/payment/discover")
+    public Object discover(){
+        List<String> services = discoveryClient.getServices();
+
+        for (String service : services) {
+            log.info("*****application个数是："+service);
+        }
+
+        List<ServiceInstance> instances = discoveryClient.getInstances("CLOUD-PAYMENT-SERVICE");
+        for (ServiceInstance instance : instances) {
+            log.info("*****端口的信息："+instance.getServiceId()+"\t"+
+                    instance.getHost()+"\t"+instance.getPort()+"\t"+
+                    instance.getUri());
+        }
+        return discoveryClient;
+    }
+
 }

@@ -2,6 +2,7 @@ package com.sias.springcloud.controller;
 
 
 
+import com.netflix.discovery.DiscoveryClient;
 import com.sias.springcloud.entities.CommonResult;
 import com.sias.springcloud.entities.Payment;
 import lombok.extern.slf4j.Slf4j;
@@ -23,10 +24,19 @@ import javax.annotation.Resource;
 @RestController
 @Slf4j
 public class OrderController {
-    /*01.公共的地址*/
-    public static final String PAYMENT_URL = "http://localhost:8001";
+    /*01.公共的地址
+    *    是按照这个地址去访问的
+    *    在一开始单机模式中，直接写上一个即可
+    *    集群模式中，直接写上这个注册在Eureka中的
+    *    服务名称，访问的时候，是按照这个名字，
+    *    不管，名字下面有多少个支付模块
+    *    */
+    //public static final String PAYMENT_URL = "http://localhost:8001";
+    public static final String PAYMENT_URL = "http://CLOUD-PAYMENT-SERVICE";
     @Resource
     private RestTemplate restTemplate;
+
+
     /*02.写的操作
     *
     *    Payment对象插入数据
@@ -40,7 +50,7 @@ public class OrderController {
         return restTemplate.postForObject(PAYMENT_URL+"/payment/create/",payment, CommonResult.class);
     }
     /*03.读的操作*/
-    @GetMapping("/consumer/payment/get{id}")
+    @GetMapping("/consumer/payment/get/{id}")
     public CommonResult<Payment> getPayment1(@PathVariable("id") Long id)
     {
         return restTemplate.getForObject(PAYMENT_URL+"/payment/get/"+id,CommonResult.class);

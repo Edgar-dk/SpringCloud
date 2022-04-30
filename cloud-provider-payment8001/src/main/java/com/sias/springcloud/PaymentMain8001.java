@@ -13,6 +13,7 @@ import org.springframework.context.annotation.ComponentScan;
 
 @SpringBootApplication
 @EnableEurekaClient
+
 public class PaymentMain8001 {
 
     public static void main(String[] args) {
