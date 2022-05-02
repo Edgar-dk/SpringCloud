@@ -1,0 +1,18 @@
+###consul服务端口号,这个端口号可以在service的基础上有多个，意味着，一个支付模块下面有多个端口号，这样可以适应高并发的业务
+server:
+  port: 80
+
+spring:
+  application:
+    name: cloud-consumer-order
+  ####consul注册中心地址，
+  #把上面服务名字的注册进去，名字是在上面起的，注册进去的还是
+  #按照这个名字在下面去注册，下面是真正注册的地方
+  cloud:
+    consul:
+      host: localhost
+      port: 8500
+      discovery:
+        #hostname: 127.0.0.1
+        service-name: ${spring.application.name}
+

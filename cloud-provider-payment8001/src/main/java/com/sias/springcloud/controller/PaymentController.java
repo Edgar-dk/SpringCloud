@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 /**
  * @author Edgar
@@ -103,4 +104,23 @@ public class PaymentController {
         return discoveryClient;
     }
 
+
+
+    /*07.访问一个地址*/
+    @GetMapping(value = "/payment/lb")
+    public String getPayment(){
+        return serverPort;
+    }
+
+
+    /*08.模拟支付模块花费的时间*/
+    @GetMapping(value = "/payment/feign/timeout")
+    public String PaymentFeignTimeout() {
+        try {
+            TimeUnit.SECONDS.sleep(3);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        return serverPort;
+    }
 }

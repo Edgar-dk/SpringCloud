@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import java.util.concurrent.TimeUnit;
 
 /**
  * @author Edgar
@@ -70,6 +71,21 @@ public class PaymentController {
     }
 
 
+    /*07.访问一个地址*/
+    @GetMapping(value = "/payment/lb")
+    public String getPayment(){
+        return serverPort;
+    }
+
+    /*@GetMapping(value = "/payment/feign/timeout")
+    public String PaymentFeignTimeout() {
+        try {
+            TimeUnit.SECONDS.sleep(3);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        return serverPort;
+    }*/
     /*测试跳转页面*//*
     @RequestMapping( "/success")
     @ResponseBody
