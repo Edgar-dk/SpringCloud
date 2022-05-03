@@ -1,0 +1,25 @@
+package com.sias.springcloud;
+
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.cloud.client.circuitbreaker.EnableCircuitBreaker;
+import org.springframework.cloud.netflix.eureka.EnableEurekaClient;
+
+/**
+ * @auther zzyy
+ * @create 2020-02-04 13:04
+ */
+@SpringBootApplication
+@EnableEurekaClient //本服务启动后会自动注册进eureka服务中
+@EnableCircuitBreaker//激活业务兜底的方法
+public class PaymentHystrixMain8001
+{
+    public static void main(String[] args)
+    {
+        SpringApplication.run(PaymentHystrixMain8001.class,args);
+    }
+}
+ 
+ 
+ 
+

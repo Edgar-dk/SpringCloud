@@ -1,0 +1,28 @@
+server:
+  port: 8001
+
+spring:
+  application:
+    #熔断服务的名字
+    name: cloud-provider-hystrix-payment
+#feign:
+#  client:
+#    config:
+#      default:
+#        connectTimeout: 10000
+#        readTimeout: 600000
+eureka:
+  client:
+    register-with-eureka: true
+    fetch-registry: true
+    service-url:
+      #集群
+      #defaultZone: http://eureka7001.com:7001/eureka,http://eureka7002.com:7002/eureka
+      #单机版
+      defaultZone: http://eureka7001.com:7001/eureka
+
+
+
+
+
+
