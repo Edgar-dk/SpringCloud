@@ -10,9 +10,14 @@ eureka:
       defaultZone: http://eureka7001.com:7001/eureka/
 
 
+
+
+
 feign:
   client:
     config:
       default:
         connectTimeout: 10000
         readTimeout: 600000
+  hystrix:
+    enabled: true
