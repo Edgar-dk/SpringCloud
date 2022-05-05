@@ -23,8 +23,10 @@ eureka:
     fetchRegistry: true
     service-url:
       #注册的地址
-      #defaultZone: http://localhost:7001/eureka
-      defaultZone: http://eureka7001.com:7001/eureka,http://eureka7002.com:7002/eureka  # 集群版
+      defaultZone: http://localhost:7001/eureka #单机版
+      #defaultZone: http://eureka7001.com:7001/eureka,http://eureka7002.com:7002/eureka  # 集群版
+  #注册进去的状态名字是什么（同时也可以理解成是一个端口号，因为这个端口号可以在应用名字一样的状况下有多个，
+  #下用户去访问的时候，就可以按照应用的名字去访问下面的端口号（按照一定的算法））
   instance:
     instance-id: payment8001
     prefer-ip-address: true     #访问路径可以显示IP地址
